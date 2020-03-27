@@ -7,8 +7,8 @@ namespace BeckyShop.Models
 {
     public interface IPieRepository
     {
-        IEnumerable<Pie> AllPies { get; }
-        IEnumerable<Pie> PiesOfTheWeek { get; }
+        IEnumerable<Pie> AllPies();
+        IEnumerable<Pie> PiesOfTheWeek();
         Pie PieGetById(int id);
     }
 }

@@ -25,7 +25,7 @@ namespace BeckyShop.Controllers
         public ViewResult List()
         {
             PieListViewModel pieList = new PieListViewModel();
-            pieList.ListOfPies = _pieRepository.AllPies;
+            pieList.ListOfPies = _pieRepository.AllPies();
             pieList.CurrentCategory = "Cheese cakes";
 
             return View(pieList);
