@@ -30,5 +30,14 @@ namespace BeckyShop.Controllers
 
             return View(pieList);
         }
+
+        public IActionResult Details(int id)
+        {
+            var pieById = _pieRepository.PieGetById(id);
+            if (pieById == null)
+                return NotFound();
+
+            return View(pieById);
+        }
     }
 }
