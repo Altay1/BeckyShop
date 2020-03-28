@@ -28,8 +28,17 @@ namespace BeckyShop
         {
             services.AddDbContext<AppDbContext>(options => options
                 .UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+
             services.AddScoped<IPieRepository, PieRepository>();
+
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCart(sp));
+
+            services.AddHttpContextAccessor();
+
+            services.AddSession();
+
             services.AddControllersWithViews();
         }
 
@@ -42,6 +51,8 @@ namespace BeckyShop
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseSession();
 
             app.UseRouting();
 
