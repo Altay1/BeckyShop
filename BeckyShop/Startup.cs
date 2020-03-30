@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using BeckyShop.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 namespace BeckyShop
 {
@@ -28,10 +29,13 @@ namespace BeckyShop
         {
             services.AddDbContext<AppDbContext>(options => options
                 .UseSqlServer(_configuration.GetConnectionString("DefaultConnection")));
+            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<AppDbContext>();
 
             services.AddScoped<IPieRepository, PieRepository>();
 
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+
 
             services.AddScoped<ShoppingCart>(sp => ShoppingCart.GetCart(sp));
 
@@ -40,6 +44,8 @@ namespace BeckyShop
             services.AddSession();
 
             services.AddControllersWithViews();
+
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,12 +61,15 @@ namespace BeckyShop
             app.UseSession();
 
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
